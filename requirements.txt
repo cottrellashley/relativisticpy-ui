@@ -1,0 +1,4 @@
+sympy
+regex
+openai
+relativisticpy==1.0.7
