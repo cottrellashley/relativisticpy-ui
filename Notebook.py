@@ -60,7 +60,7 @@ S
 """
 
 def main():
-    st.title("RelativisticPy Playground")
+    st.title("RelativisticPy (Beta-Release) Playground")
 
     # Define a key for the session state
     if 'execute_clicked' not in st.session_state:
