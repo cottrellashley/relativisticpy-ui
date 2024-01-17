@@ -1,1 +1,0 @@
-Side Note: This is a python application writen using mainly streamlit for the UI and sympy for the calculations. Althouh streamlit is a wonderfully owerful tool, allowing me to get this app up and running in a matter of just a few days, it is limmited and I will soon be building my own UI for the future.

@@ -1,1 +1,0 @@
-Once both the Metric, Basis and Operation all have your inputs, press the Calculate button in the top left and the answer to your inputs will be displayed here.

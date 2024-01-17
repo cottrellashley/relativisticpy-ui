@@ -1,0 +1,14 @@
+Coordinates := [t, r, theta, phi]
+g_{mu}_{nu} := [[-(1 - (2 * G * M) / (r)), 0, 0, 0],[0, 1 / (1 - (2 * G * M) / (r)), 0, 0],[0, 0, r**2, 0],[0, 0, 0, r**2 * sin(theta) ** 2]]
+
+Gamma^{a}_{c}_{f} = (1/2)*g^{a}^{b}*(d_{c}*g_{b}_{f} + d_{f}*g_{b}_{c} - d_{b}*g_{c}_{f})
+
+Riemann^{a}_{m}_{b}_{n} = d_{b}*Gamma^{a}_{n}_{m} + Gamma^{a}_{b}_{l}*Gamma^{l}_{n}_{m} - d_{n}*Gamma^{a}_{b}_{m} - Gamma^{a}_{n}_{l}*Gamma^{l}_{b}_{m}
+
+Ricci_{m}_{n} = Riemann^{a}_{m}_{a}_{n}
+
+TempOne^{a}^{f}^{h}^{i} = g^{i}^{d}*(g^{h}^{c}*(g^{f}^{b}*Riemann^{a}_{b}_{c}_{d}))
+
+TempTwo_{a}_{f}_{h}_{i} = g_{a}_{n}*Riemann^{n}_{f}_{h}_{i}
+
+TempTwo_{a}_{f}_{h}_{i}*TempOne^{a}^{f}^{h}^{i}

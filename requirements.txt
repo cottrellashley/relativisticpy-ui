@@ -1,4 +1,2 @@
-sympy
-regex
-openai
-relativisticpy==1.0.7
+relativisticpy==1.2.1
+sympy==1.12
