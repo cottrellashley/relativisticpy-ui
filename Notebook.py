@@ -1,13 +1,13 @@
 import streamlit as st
 import sympy as smp
 import relativisticpy as rel
-
+from relativisticpy.symengine import Basic
 st.set_page_config(layout="wide")
 
 pl_holer = """
 # ============================================ K-SCALAR COMPUTATION ============================================
 
-Coordinates : { t, r, theta, phi }
+Coordinates := [] t, r, theta, phi ]
 g_{mu}_{nu} := [
                     [-(1 - (2 * G * M) / (c**2*r)), 0, 0, 0],
                     [0, 1 / (1 - (2 * G * M) / (c**2*r)), 0, 0],
@@ -21,7 +21,7 @@ Riemann^{a}_{m}_{b}_{n} = d_{b}*Gamma^{a}_{n}_{m} + Gamma^{a}_{b}_{l}*Gamma^{l}_
 
 Ricci_{m}_{n} = Riemann^{a}_{m}_{a}_{n}
 
-TempOne^{a}^{f}^{h}^{i} = g^{i}^{d}*(g^{h}^{c}*(g^{f}^{b}*Riemann^{a}_{b}_{c}_{d}))
+TempOne^{a}^{f}^{h}^{i} = g^{i}^{g}*(g^{h}^{c}*(g^{f}^{b}*Riemann^{a}_{b}_{c}_{g}))
 
 TempTwo_{a}_{f}_{h}_{i} = g_{a}_{n}*Riemann^{n}_{f}_{h}_{i}
 
@@ -62,9 +62,12 @@ def main():
                 latex_result = smp.latex(result)
                 st.latex(latex_result)
             elif hasattr(result[-1], 'components'):
-                if isinstance(result[-1], rel.symengine.Basic):
+                if isinstance(result[-1], Basic):
                     latex_result = smp.latex(result[-1])
                     st.latex(latex_result)
+                elif isinstance(result[-1], Basic):
+                    error_message = result
+                    st.error(body=error_message, icon="🚨")
                 else:
                     latex_result = smp.latex(result[-1].components)
                     st.latex(latex_result)
