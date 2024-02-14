@@ -7,7 +7,7 @@ st.set_page_config(layout="wide")
 pl_holer = """
 # ============================================ K-SCALAR COMPUTATION ============================================
 
-Coordinates := [] t, r, theta, phi ]
+Coordinates := [ t, r, theta, phi ]
 g_{mu}_{nu} := [
                     [-(1 - (2 * G * M) / (c**2*r)), 0, 0, 0],
                     [0, 1 / (1 - (2 * G * M) / (c**2*r)), 0, 0],
