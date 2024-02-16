@@ -2,10 +2,10 @@ import streamlit as st
 import sympy as smp
 import relativisticpy as rel
 from relativisticpy.symengine import Basic
+
 st.set_page_config(layout="wide")
 
-pl_holer = """
-# ============================================ K-SCALAR COMPUTATION ============================================
+pl_holer_ = """
 
 Coordinates := [ t, r, theta, phi ]
 g_{mu}_{nu} := [
@@ -15,22 +15,23 @@ g_{mu}_{nu} := [
                     [0, 0, 0, r**2 * sin(theta) ** 2]
                 ]
 
-Gamma^{a}_{c}_{f} = (1/2)*g^{a}^{b}*(d_{c}*g_{b}_{f} + d_{f}*g_{b}_{c} - d_{b}*g_{c}_{f})
+Gamma^{a}_{c}_{f} := (1/2)*g^{a}^{b}*(d_{c}*g_{b}_{f} + d_{f}*g_{b}_{c} - d_{b}*g_{c}_{f})
 
-Riemann^{a}_{m}_{b}_{n} = d_{b}*Gamma^{a}_{n}_{m} + Gamma^{a}_{b}_{l}*Gamma^{l}_{n}_{m} - d_{n}*Gamma^{a}_{b}_{m} - Gamma^{a}_{n}_{l}*Gamma^{l}_{b}_{m}
+Riemann^{a}_{m}_{b}_{n} := d_{b}*Gamma^{a}_{n}_{m} + Gamma^{a}_{b}_{l}*Gamma^{l}_{n}_{m} - d_{n}*Gamma^{a}_{b}_{m} - Gamma^{a}_{n}_{l}*Gamma^{l}_{b}_{m}
 
-Ricci_{m}_{n} = Riemann^{a}_{m}_{a}_{n}
+Ricci_{m}_{n} := Riemann^{a}_{m}_{a}_{n}
 
-TempOne^{a}^{f}^{h}^{i} = g^{i}^{g}*(g^{h}^{c}*(g^{f}^{b}*Riemann^{a}_{b}_{c}_{g}))
+TempOne^{a}^{f}^{h}^{i} := g^{i}^{g}*(g^{h}^{c}*(g^{f}^{b}*Riemann^{a}_{b}_{c}_{g}))
 
-TempTwo_{a}_{f}_{h}_{i} = g_{a}_{n}*Riemann^{n}_{f}_{h}_{i}
+TempTwo_{a}_{f}_{h}_{i} := g_{a}_{n}*Riemann^{n}_{f}_{h}_{i}
 
-S = TempOne^{a}^{f}^{h}^{i}*TempTwo_{a}_{f}_{h}_{i}
+S := TempOne^{a}^{f}^{h}^{i}*TempTwo_{a}_{f}_{h}_{i}
 
-S
+simplify(S)
+
 """
 
-def main():
+def main(pl_holer):
     st.title("RelativisticPy (Beta-Release) Playground")
 
     # Define a key for the session state
@@ -45,6 +46,8 @@ def main():
         # Set the state to indicate the button was clicked
         st.session_state.execute_clicked = True
 
+    tick = st.checkbox(label="Display Latex")
+
     # Check if the execute button was clicked
     if st.session_state.execute_clicked:
         workbook = rel.Workbook()
@@ -54,35 +57,46 @@ def main():
         if user_input is not None:
             textsplit = user_input.splitlines()
             text = "\n".join(textsplit)
-
             result = workbook.expr(text)
-        
-        if result:
-            if not isinstance(result, list):
-                latex_result = smp.latex(result)
-                st.latex(latex_result)
-            elif hasattr(result[-1], 'components'):
-                if isinstance(result[-1], Basic):
-                    latex_result = smp.latex(result[-1])
+
+        # Split the screen into 2 columns for Output1 and Output2
+        col1, col2 = st.columns(2)
+
+        # Output1 on the left
+        with col1:
+            st.write('##### Latex Output')
+            if tick:
+                st.latex(text)
+
+        # Output2 on the right
+        with col2:
+            st.write('##### Computed Output')
+            if result:
+                if not isinstance(result, list):
+                    latex_result = smp.latex(result)
                     st.latex(latex_result)
-                elif isinstance(result[-1], Basic):
-                    error_message = result
-                    st.error(body=error_message, icon="🚨")
+                elif hasattr(result[-1], 'components'):
+                    if isinstance(result[-1], Basic):
+                        latex_result = smp.latex(result[-1])
+                        st.latex(latex_result)
+                    elif isinstance(result[-1], Basic):
+                        error_message = result
+                        st.error(body=error_message, icon="🚨")
+                    else:
+                        latex_result = smp.latex(result[-1].components)
+                        st.latex(latex_result)
                 else:
-                    latex_result = smp.latex(result[-1].components)
+                    latex_result = smp.latex(smp.simplify(result[-1]))
                     st.latex(latex_result)
             else:
-                latex_result = smp.latex(smp.simplify(result[-1]))
-                st.latex(latex_result)
-        else:
-            st.text("No output generated.")
+                st.text("No output generated.")
 
-        # Reset the state after processing
-        st.session_state.execute_clicked = False
+            # Reset the state after processing
+            st.session_state.execute_clicked = False
 
-        # Optional: You can also clear the text area after processing
-        user_input = ""
+            # Optional: You can also clear the text area after processing
+            user_input = ""
 
 if __name__ == "__main__":
-    main()
+    main(pl_holer_)
 
