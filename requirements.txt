@@ -1,2 +1,2 @@
-relativisticpy==1.2.6
+relativisticpy==1.2.7
 sympy==1.12
