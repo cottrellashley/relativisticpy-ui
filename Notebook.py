@@ -72,22 +72,15 @@ def main(pl_holer):
         with col2:
             st.write('##### Computed Output')
             if result:
-                if not isinstance(result, list):
+                if hasattr(result, 'components'):
+                    latex_result = smp.latex(result.components)
+                    st.latex(latex_result)
+                elif isinstance(result, Basic):
                     latex_result = smp.latex(result)
                     st.latex(latex_result)
-                elif hasattr(result[-1], 'components'):
-                    if isinstance(result[-1], Basic):
-                        latex_result = smp.latex(result[-1])
-                        st.latex(latex_result)
-                    elif isinstance(result[-1], Basic):
-                        error_message = result
-                        st.error(body=error_message, icon="🚨")
-                    else:
-                        latex_result = smp.latex(result[-1].components)
-                        st.latex(latex_result)
-                else:
-                    latex_result = smp.latex(smp.simplify(result[-1]))
-                    st.latex(latex_result)
+                elif isinstance(result, Basic):
+                    error_message = result
+                    st.error(body=error_message, icon="🚨")
             else:
                 st.text("No output generated.")
 
