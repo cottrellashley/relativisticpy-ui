@@ -71,7 +71,7 @@ def main(pl_holer):
         # Output2 on the right
         with col2:
             st.write('##### Computed Output')
-            if result:
+            if result != None:
                 if hasattr(result, 'components'):
                     latex_result = smp.latex(result.components)
                     st.latex(latex_result)
