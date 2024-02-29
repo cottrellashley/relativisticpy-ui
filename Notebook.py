@@ -78,6 +78,9 @@ def main(pl_holer):
                 elif isinstance(result, Basic):
                     latex_result = smp.latex(result)
                     st.latex(latex_result)
+                elif isinstance(result, list):
+                    latex_result = smp.latex(result[-1])
+                    st.latex(latex_result)
                 elif isinstance(result, Basic):
                     error_message = result
                     st.error(body=error_message, icon="🚨")
